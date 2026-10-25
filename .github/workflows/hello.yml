@@ -13,4 +13,4 @@ jobs:
         run: echo "Hello! My first GitHub Actions workflow is running."
 
       - name: Show the current branch
-        run: echo "Branch: $GITHUB_REF"
+        run: 'echo "Branch: $GITHUB_REF"'
