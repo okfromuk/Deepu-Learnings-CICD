@@ -1,0 +1,14 @@
+# Do not commit locally installed Node.js dependencies.
+node_modules/
+
+# Do not commit environment variables or secrets.
+.env
+
+# Ignore generated log files.
+*.log
+
+# Ignore macOS Finder metadata.
+.DS_Store
+
+# Ignore test coverage reports generated locally.
+coverage/

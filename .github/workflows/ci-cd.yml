@@ -1,0 +1,69 @@
+# # Friendly name displayed on the GitHub Actions page.
+# name: Test and Publish to Amazon ECR
+
+# # Run this workflow for pushes and pull requests targeting main.
+# on:
+#   push:
+#     branches: [main] # Only pushes to main trigger this workflow.
+#   pull_request:
+#     branches: [main] # Pull requests targeting main run validation.
+
+# # Set minimal default permissions for all jobs.
+# permissions:
+#   contents: read # Allows checkout to read repository source code.
+
+# jobs:
+#   test: # First job: prove the code and Docker build are valid.
+#     name: Test application
+#     runs-on: ubuntu-latest # GitHub provides a temporary Ubuntu runner.
+#     steps:
+#       - name: Checkout source
+#         uses: actions/checkout@v4 # Downloads repository files to the runner.
+
+#       - name: Set up Node.js
+#         uses: actions/setup-node@v4 # Installs/configures Node.js on the runner.
+#         with:
+#           node-version: "22" # Use the same major runtime as the Docker image.
+
+#       - name: Run unit tests
+#         run: npm test # A failing test stops this job.
+
+#       - name: Build Docker image locally
+#         run: docker build -t devops-status-api:test . # Validate the Dockerfile.
+
+#   publish: # Second job: publish an image only after the test job passes.
+#     name: Build and push image to ECR
+#     needs: test # Prevents publishing if the test job fails.
+#     if: github.event_name == 'push' && github.ref == 'refs/heads/main' # Never publish from pull requests.
+#     runs-on: ubuntu-latest # Use a fresh runner for the publishing job.
+
+#     permissions:
+#       contents: read # Needed to check out the source code.
+#       id-token: write # Allows the job to request a GitHub OIDC token for AWS.
+
+#     steps:
+#       - name: Checkout source
+#         uses: actions/checkout@v4 # Get the exact source revision being published.
+
+#       - name: Configure AWS credentials using OIDC
+#         uses: aws-actions/configure-aws-credentials@v4 # Exchanges the OIDC token for temporary AWS credentials.
+#         with:
+#           role-to-assume: ${{ vars.AWS_ROLE_ARN }} # IAM role configured to trust this repository/branch.
+#           aws-region: ${{ vars.AWS_REGION }} # Region where the ECR repository exists.
+
+#       - name: Log in to Amazon ECR
+#         id: login-ecr # Gives later steps a name to reference the registry output.
+#         uses: aws-actions/amazon-ecr-login@v2 # Logs Docker into the private ECR registry.
+
+#       - name: Build and push image
+#         env:
+#           REGISTRY: ${{ steps.login-ecr.outputs.registry }} # Registry hostname returned by the login action.
+#           REPOSITORY: ${{ vars.ECR_REPOSITORY }} # ECR repository name stored in GitHub variables.
+#           IMAGE_TAG: ${{ github.sha }} # Full commit SHA makes each build traceable.
+#         run: |
+#           set -euo pipefail # Stop if a command fails or an undefined variable is used.
+#           IMAGE_URI="$REGISTRY/$REPOSITORY:$IMAGE_TAG" # Build the immutable image URI.
+#           docker build --pull -t "$IMAGE_URI" -t "$REGISTRY/$REPOSITORY:latest" . # Build and tag the image.
+#           docker push "$IMAGE_URI" # Publish the commit-specific image tag.
+#           docker push "$REGISTRY/$REPOSITORY:latest" # Also publish a convenient latest tag.
+#           echo "Published $IMAGE_URI" # Print the exact image URI for learners.

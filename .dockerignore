@@ -1,0 +1,17 @@
+# Exclude Git history; it is not needed inside the runtime image.
+.git
+
+# Exclude CI workflow files from the Docker build context.
+.github
+
+# Exclude local dependencies; this project uses Node.js built-ins only.
+node_modules
+
+# Exclude npm diagnostic logs.
+npm-debug.log
+
+# Never copy local environment files or secrets into the image.
+.env
+
+# Exclude local test coverage output.
+coverage
