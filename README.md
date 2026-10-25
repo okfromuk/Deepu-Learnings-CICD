@@ -1,4 +1,5 @@
 # DevOps Status API — Git, GitHub Actions, Docker, Amazon ECR
+My DevOps Project`nThis project is used to practice Git
 
 This teaching project demonstrates a small Node.js API that is tested, containerized, and published to a private Amazon ECR repository by GitHub Actions.
 
