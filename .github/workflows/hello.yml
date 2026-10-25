@@ -1,0 +1,16 @@
+
+name: Hello DevOps
+
+on:
+  push:
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print a greeting
+        run: echo "Hello! My first GitHub Actions workflow is running."
+
+      - name: Show the current branch
+        run: echo "Branch: $GITHUB_REF"
