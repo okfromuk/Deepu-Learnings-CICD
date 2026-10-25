@@ -1,0 +1,30 @@
+
+name: Multi Job Pipeline
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check project files
+        run: echo "Build stage completed"
+
+  test:
+    name: Test Check
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Run simulated tests
+        run: echo "Tests passed"
+
+  deploy:
+    name: Deployment Simulation
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Simulate deployment
+        run: echo "Deployment simulation completed"
