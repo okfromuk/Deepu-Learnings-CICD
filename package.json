@@ -1,0 +1,14 @@
+
+{
+  "name": "devops-status-api",
+  "version": "1.0.0",
+  "description": "Beginner DevOps project using Node.js, GitHub Actions, Docker, and AWS ECR",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
