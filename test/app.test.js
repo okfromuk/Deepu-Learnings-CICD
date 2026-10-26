@@ -37,7 +37,7 @@ test("GET / returns application status", async () => {
 
 // Verify the health endpoint returns healthy.
 test("GET /health returns healthy", async () => {
-  const result = await invoke("/health"); // Call the health route.
+  const result = await invoke("/healths"); // Call the health route.
   assert.equal(result.statusCode, 200); // Expect HTTP OK.
   assert.equal(result.body.status, "healthy"); // Check health field.
 });
