@@ -31,3 +31,8 @@ jobs:
           else
             echo "No demo token is configured."
           fi
+                - name: Display deployment region
+      - name: Display deployment region
+        env:
+          DEPLOY_REGION: ${{ vars.DEPLOY_REGION }}
+        run: echo "Deployment region: $DEPLOY_REGION"
