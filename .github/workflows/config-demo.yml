@@ -35,4 +35,4 @@ jobs:
       - name: Display deployment region
         env:
           DEPLOY_REGION: ${{ vars.DEPLOY_REGION }}
-        run: echo "Deployment region: $DEPLOY_REGION"
+        run: 'echo "Deployment region: $DEPLOY_REGION"'
