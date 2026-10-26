@@ -1,0 +1,33 @@
+
+name: Configuration Demo
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  APP_NAME: devops-status-api
+  APP_ENV: development
+
+jobs:
+  show-config:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Display non-sensitive configuration
+        run: |
+          echo "Application: $APP_NAME"
+          echo "Environment: $APP_ENV"
+
+      - name: Use a secret safely
+        env:
+          DEMO_TOKEN: ${{ secrets.DEMO_TOKEN }}
+        run: |
+          if [ -n "$DEMO_TOKEN" ]; then
+            echo "A demo token is configured."
+          else
+            echo "No demo token is configured."
+          fi
